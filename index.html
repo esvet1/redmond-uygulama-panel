@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>REDMOND Proje Limanı</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Saira+Condensed:wght@400;500;600;700&family=Saira+Stencil+One&display=swap">
+<style>
+/* Yerleşim: gece limanı. Üstte ufuk (gemi, su, sis), altında rıhtım sahası;
+   raylı gantri kirişi sayfayla birlikte yapışık kalır, konteynerler sahada ızgara. Tek tema: gece. */
+:root{
+  color-scheme:dark;
+  --night:#08121d; --deep:#0d1a29; --steel:#1a2838; --edge:#31475c;
+  --fg:#e8eef4; --mute:#8da2b5;
+  --sodium:#ffb44a; --hazard:#f2c230; --red:#c9352c; --idle:#7fd6e8; --ok:#4cd48a; --down:#ff5a4f;
+  --display:"Saira Stencil One","Impact","Arial Narrow",sans-serif;
+  --ui:"Saira Condensed","Arial Narrow",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--night);color:var(--fg);font:500 16px/1.35 var(--ui)}
+.in{max-width:1240px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--sodium);outline-offset:2px}
+
+/* üst bant */
+.top .in{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;padding-block:16px}
+.brand{margin:0;display:flex;flex-direction:column;line-height:1}
+.brand b{font:400 34px/1 var(--display);letter-spacing:.04em}
+.brand b::first-letter{color:var(--red)}
+.brand span{font:600 12px var(--ui);letter-spacing:.24em;color:var(--mute);margin-top:6px}
+.manifest{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0 0 0 auto;padding:8px 14px;border:1px solid var(--edge);background:var(--deep)}
+.manifest div{display:flex;flex-direction:column}
+.manifest dt{font:600 10px var(--ui);letter-spacing:.18em;color:var(--mute);text-transform:uppercase}
+.manifest dd{margin:0;font:500 20px/1.1 var(--mono);font-variant-numeric:tabular-nums}
+#m-eksik{color:var(--sodium)}
+.btn{font:700 14px var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--fg);background:var(--steel);border:1px solid var(--edge);padding:10px 14px;border-radius:2px;cursor:pointer}
+.btn:hover{border-color:var(--mute)}
+.btn.primary{background:var(--sodium);border-color:var(--sodium);color:#1c1204}
+.btn.danger{color:#ff9d96;border-color:#6b2a26}
+
+/* ufuk */
+.horizon{position:relative;height:118px;overflow:hidden;background:
+  radial-gradient(60% 90% at 50% 100%,rgba(255,180,74,.2),transparent 70%),
+  linear-gradient(#050b13,#0e1f31)}
+.lamps{position:absolute;inset:auto 0 42px;height:6px;background:radial-gradient(circle,var(--sodium) 0 1.4px,transparent 2.6px) 0 0/86px 6px repeat-x;filter:drop-shadow(0 0 4px var(--sodium))}
+.ship{position:absolute;left:0;bottom:41px;width:230px;height:46px;background:#03070d;
+  clip-path:polygon(0 62%,6% 62%,6% 30%,14% 30%,14% 62%,20% 62%,20% 40%,70% 40%,70% 48%,86% 48%,86% 62%,100% 62%,94% 100%,4% 100%);
+  animation:sail 120s linear infinite}
+.ship::after{content:"";position:absolute;left:17px;top:17px;width:2px;height:2px;background:#ffd98a;box-shadow:6px 0 #ffd98a,0 6px #ffd98a,6px 6px #ffd98a,198px 14px #e0443a}
+.water{position:absolute;inset:auto 0 8px;height:34px;background:linear-gradient(#0b1c2d,#06101a)}
+.water::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 30px,rgba(255,180,74,.22) 30px 40px,transparent 40px 86px);
+  -webkit-mask-image:repeating-linear-gradient(transparent 0 3px,#000 3px 4px);mask-image:repeating-linear-gradient(transparent 0 3px,#000 3px 4px);animation:shimmer 7s linear infinite}
+.fog{position:absolute;inset:25% -20% 0;background:radial-gradient(50% 60% at 30% 60%,rgba(160,190,215,.15),transparent),radial-gradient(40% 50% at 75% 50%,rgba(160,190,215,.11),transparent);animation:drift 38s ease-in-out infinite alternate}
+.horizon::after{content:"";position:absolute;inset:auto 0 0;height:8px;background:repeating-linear-gradient(-45deg,var(--hazard) 0 10px,#11161c 10px 20px)}
+@keyframes sail{from{transform:translateX(-240px)}to{transform:translateX(100vw)}}
+@keyframes shimmer{to{background-position:86px 0}}
+@keyframes drift{to{transform:translateX(12%)}}
+@keyframes blink{50%{opacity:.25}}
+
+/* saha + vinç */
+.yard{overflow:clip;background:
+  radial-gradient(40% 320px at 18% 0,rgba(255,180,74,.09),transparent),
+  radial-gradient(40% 320px at 82% 0,rgba(255,180,74,.09),transparent),
+  repeating-linear-gradient(90deg,transparent 0 158px,rgba(242,194,48,.07) 158px 160px),
+  linear-gradient(#0f1d2c,#0a141f 420px)}
+#beam{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;height:26px;border-block:3px solid var(--edge);
+  background:repeating-linear-gradient(60deg,transparent 0 12px,rgba(255,255,255,.07) 12px 14px),repeating-linear-gradient(-60deg,transparent 0 12px,rgba(255,255,255,.07) 12px 14px),var(--steel)}
+#beam::before,#beam::after{content:"";position:absolute;top:100%;width:8px;height:300vh;background:linear-gradient(90deg,var(--edge),var(--steel));pointer-events:none}
+#beam::before{left:0}#beam::after{right:0}
+#beam span{position:absolute;left:16px;top:2px;font:500 10px var(--mono);letter-spacing:.14em;color:var(--mute);white-space:nowrap}
+#trolley{position:absolute;left:0;top:100%;width:0;height:0;pointer-events:none;will-change:transform}
+#trolley::before{content:"";position:absolute;left:-30px;top:-5px;width:60px;height:17px;background:var(--red);border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.5),0 0 14px rgba(255,180,74,.35)}
+#rope{position:absolute;top:12px;left:0;width:44px;height:1px;border-inline:2px solid #9fb0bf;transform-origin:50% 0}
+#spreader{position:absolute;top:12px;left:0;width:96px;height:9px;background:var(--hazard);border-radius:1px;box-shadow:inset 10px 0 #11161c,inset -10px 0 #11161c;transition:width .3s}
+
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:42px 24px;padding:66px 20px 52px}
+.empty{grid-column:1/-1;color:var(--mute);font-size:18px;margin:0}
+.slot{position:relative;perspective:900px;container-type:inline-size;min-width:0}
+.slot::after{content:"";position:absolute;inset:auto 5% -12px;height:14px;background:radial-gradient(closest-side,rgba(0,0,0,.65),transparent);transition:transform .35s,opacity .35s}
+.slot:has(.lifted)::after{transform:scaleX(.84);opacity:.45}
+.box{position:relative;aspect-ratio:2.1;display:grid;grid-template-rows:9px 1fr 30px;border-radius:3px;overflow:hidden;cursor:pointer;
+  background:var(--c);color:var(--ink);box-shadow:0 0 0 1px rgba(0,0,0,.55);transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
+.box.lifted{transform:translateY(-14px)}
+.box.on{box-shadow:0 0 0 1px rgba(0,0,0,.55),0 0 26px rgba(255,180,74,.28)}
+.rail{background:color-mix(in srgb,var(--c) 58%,#000)}
+.rail.bot{display:flex;align-items:center;gap:8px;padding-left:10px;color:#fff;font:700 12px var(--ui);letter-spacing:.14em;white-space:nowrap}
+.lamp{flex:none;width:9px;height:9px;border-radius:50%;background:var(--idle);box-shadow:0 0 8px var(--idle)}
+.lamp.warn{background:var(--sodium);box-shadow:0 0 8px var(--sodium);animation:blink 1.6s steps(2) infinite}
+.lamp.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.lamp.down{background:var(--down);box-shadow:0 0 8px var(--down)}
+.ed{margin-left:auto;width:34px;height:30px;background:none;border:0;color:#fff;opacity:.8;font-size:15px;cursor:pointer}
+.ed:hover{opacity:1}
+.bay{position:relative;min-height:0}
+.inside{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:6px 15%;
+  background:radial-gradient(70% 90% at 50% 0,rgba(255,180,74,.16),transparent),linear-gradient(#0e161f,#04070b);color:var(--fg);font:400 12px/1.35 var(--mono)}
+.inside>*{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.inside b{font:700 15px var(--ui);letter-spacing:.06em}
+.inside .dim{color:var(--mute)}
+.door{position:absolute;top:0;bottom:0;width:50%;padding:8px 10px;display:flex;flex-direction:column;justify-content:center;transition:transform .5s cubic-bezier(.3,.9,.4,1);
+  background:linear-gradient(90deg,transparent 0 12%,rgba(0,0,0,.28) 12% 13.5%,transparent 13.5% 86.5%,rgba(0,0,0,.28) 86.5% 88%,transparent 88%),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.17) 0 2px,transparent 2px 9px,rgba(255,255,255,.09) 9px 11px,transparent 11px 18px),var(--c)}
+.door.l{left:0;transform-origin:0 50%;border-right:1px solid rgba(0,0,0,.45)}
+.door.r{right:0;transform-origin:100% 50%;align-items:flex-end;text-align:right}
+.box.on .door.l{transform:rotateY(-80deg)}
+.box.on .door.r{transform:rotateY(80deg)}
+.name{font:400 clamp(16px,7.4cqi,27px)/1 var(--display);letter-spacing:.02em;overflow-wrap:anywhere;text-wrap:balance}
+.code{font:500 clamp(11px,4.4cqi,15px)/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.code i{font-style:normal;border:1px solid currentColor;padding:0 3px;margin-left:2px}
+.code small{display:block;font-size:.72em;opacity:.8;letter-spacing:.06em}
+
+.foot .in{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;padding-block:18px 28px;color:var(--mute);font-size:15px}
+.foot p{margin:0;flex:1 1 260px;min-width:0}
+
+/* diyaloglar */
+dialog{background:var(--deep);color:var(--fg);border:1px solid var(--edge);border-radius:3px;padding:20px;width:min(440px,calc(100vw - 32px));max-height:calc(100dvh - 32px)}
+dialog::backdrop{background:rgba(3,8,14,.72)}
+dialog h2{margin:0 0 6px;font:400 24px/1 var(--display);letter-spacing:.04em;text-wrap:balance}
+dialog form,dialog .stack{display:flex;flex-direction:column;gap:6px}
+label,legend{font:600 12px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:8px;padding:0}
+label small{text-transform:none;letter-spacing:0}
+input,select,textarea{font:400 14px var(--mono);color:var(--fg);background:var(--night);border:1px solid var(--edge);border-radius:2px;padding:9px 10px;width:100%;min-width:0}
+textarea{height:240px;resize:vertical}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.sw label{margin:0;cursor:pointer}
+.sw input{position:absolute;opacity:0;width:1px;height:1px}
+.sw span{display:block;width:34px;height:24px;border-radius:2px;background:var(--c);box-shadow:0 0 0 1px rgba(0,0,0,.6)}
+.sw input:checked+span{outline:2px solid var(--fg);outline-offset:2px}
+.sw input:focus-visible+span{outline:2px solid var(--sodium);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.row .grow{flex:1}
+#json-err{color:#ff9d96;margin:0;min-height:1.3em;font-size:15px}
+.help{margin:0;color:var(--mute);font-size:15px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;max-width:calc(100vw - 32px);
+  background:var(--fg);color:#0a121b;padding:10px 16px;border-radius:2px;font:600 15px var(--ui);overflow-wrap:anywhere}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top"><div class="in">
+  <h1 class="brand"><b>REDMOND</b><span>GLOBAL TRADE · PROJE LİMANI</span></h1>
+  <dl class="manifest" aria-label="Gemi manifestosu">
+    <div><dt>Toplam</dt><dd id="m-toplam">0</dd></div>
+    <div><dt>Sunucu</dt><dd id="m-sunucu">0</dd></div>
+    <div><dt>Local</dt><dd id="m-local">0</dd></div>
+    <div><dt>Adres eksik</dt><dd id="m-eksik">0</dd></div>
+    <div class="dsk" hidden><dt>Çalışan</dt><dd id="m-ok">0</dd></div>
+    <div class="dsk" hidden><dt>Kapalı</dt><dd id="m-down">0</dd></div>
+    <div><dt>Liman saati</dt><dd id="m-saat">--:--</dd></div>
+  </dl>
+  <button class="btn primary" id="add" type="button">+ Yeni Konteyner</button>
+</div></header>
+
+<div class="horizon" aria-hidden="true"><div class="lamps"></div><div class="ship"></div><div class="water"></div><div class="fog"></div></div>
+
+<main class="yard"><div class="in">
+  <div id="beam"><span>REDMOND · RTG-01 · SWL 40 T</span><div id="trolley"><i id="rope"></i><i id="spreader"></i></div></div>
+  <div id="grid"></div>
+</div></main>
+
+<footer class="foot"><div class="in">
+  <p>Fareyle gez, vinç seni izler. Konteynere tıkla, proje açılır. Telefonda ilk dokunuş konteyneri kaldırır, ikincisi açar. Masaüstünde sürükleyerek sırala.</p>
+  <p id="proto">Prototip: durum ping'i ile klasör ve exe açma masaüstü (exe) sürümünde çalışır.</p>
+  <button class="btn" id="json-btn" type="button">projects.json</button>
+</div></footer>
+
+<dialog id="dlg" aria-labelledby="dlg-h"><form id="frm" method="dialog">
+  <h2 id="dlg-h">Yeni konteyner</h2>
+  <label for="f-ad">Proje adı</label><input id="f-ad" required maxlength="60" autocomplete="off">
+  <label for="f-tur">Tür</label>
+  <select id="f-tur"><option value="web">Web / sunucu (URL)</option><option value="klasor">Klasör (bilgisayarımda)</option><option value="local-app">Local uygulama (exe / komut)</option></select>
+  <label for="f-adres" id="l-adres">URL</label><input id="f-adres" maxlength="500" autocomplete="off">
+  <label for="f-komut">Başlatma komutu <small>(yalnızca local uygulama, boş kalabilir)</small></label><input id="f-komut" maxlength="300" autocomplete="off">
+  <fieldset><legend>Konteyner rengi</legend><div class="sw" id="f-renk"></div></fieldset>
+  <label for="f-not">Not</label><input id="f-not" maxlength="200" autocomplete="off">
+  <div class="row" id="f-sira"><button class="btn" type="button" id="f-one">◀ Öne al</button><button class="btn" type="button" id="f-arka">Arkaya al ▶</button></div>
+  <div class="row"><button class="btn danger" type="button" id="f-sil">Sil</button><span class="grow"></span><button class="btn" type="button" id="f-vazgec">Vazgeç</button><button class="btn primary" id="f-kaydet">Kaydet</button></div>
+</form></dialog>
+
+<dialog id="jd" aria-labelledby="jd-h"><div class="stack">
+  <h2 id="jd-h">projects.json</h2>
+  <p class="help">Konteyner listenin tamamı. Yedek almak için kopyala. Toplu değişiklik için düzenleyip içe aktar; exe sürümü aynı dosyayı kullanır.</p>
+  <label for="json-ta">İçerik</label><textarea id="json-ta" spellcheck="false"></textarea>
+  <p id="json-err" role="alert"></p>
+  <div class="row"><button class="btn" type="button" id="json-kapat">Kapat</button><span class="grow"></span><button class="btn" type="button" id="json-ice">İçe aktar</button><button class="btn primary" type="button" id="json-kopya">Kopyala</button></div>
+</div></dialog>
+
+<a id="go" target="_blank" rel="noopener" hidden></a>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+document.documentElement.lang='tr';
+const $=s=>document.querySelector(s);
+const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
+// shortcut: veri yalnızca bu tarayıcıda (localStorage) durur; exe sürümünde projects.json dosyasına taşınacak
+const D=window.liman; // exe sürümünde preload verir (dosya, açma, durum); tarayıcıda yok
+const KEY='redmond-liman-v1',TUR=['web','klasor','local-app'];
+const TAG={web:'SUNUCU',klasor:'LOCAL · KLASÖR','local-app':'LOCAL · APP'};
+const PH={web:['URL','https://takip.ornek.com'],klasor:['Klasör yolu','C:\\Projeler\\fatura-stok'],'local-app':['Uygulama yolu','C:\\Programlar\\TeklifPro\\TeklifPro.exe']};
+const PAL=[['#a63a2c','#fff'],['#1d4f91','#fff'],['#147a6e','#fff'],['#d4621c','#fff'],['#d1a21c','#161616'],['#586878','#fff'],['#7b2444','#fff'],['#3d7a3a','#fff']];
+
+// ISO 6346 kontrol hanesi: gerçek konteyner numaralarındaki son rakam
+function check(s){let v=10,sum=0;const m={};for(const c of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'){if(v%11===0)v++;m[c]=v++}
+  [...s].forEach((c,i)=>sum+=(m[c]??+c)*2**i);return sum%11%10}
+console.assert(check('CSQU305438')===3,'ISO 6346 kontrol hanesi yanlış');
+const newCode=ser=>{ser=ser||String(Math.floor(Math.random()*1e6)).padStart(6,'0');return `REDM ${ser}-${check('REDM'+ser)}`};
+const uid=()=>'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const str=(v,n)=>String(v??'').trim().slice(0,n);
+
+function clean(o){ // içe aktarılan ve saklanan her kayıt buradan geçer
+  if(!o||typeof o!=='object'||!str(o.ad,60))return null;
+  return{id:str(o.id,40)||uid(),ad:str(o.ad,60),tur:TUR.includes(o.tur)?o.tur:'',adres:str(o.adres,500),komut:str(o.komut,300),
+    renk:PAL[o.renk]?+o.renk:0,kod:/^REDM \d{6}-\d$/.test(o.kod)?o.kod:newCode(),not:str(o.not,200)}}
+const seed=()=>['Sevkiyat takip','Sipariş takip','Teklif Pro','Navlun sipariş takip','Proforma oluşturma','SGS veri','Fatura stok']
+  .map((ad,i)=>({id:'p'+(i+1),ad,tur:'',adres:'',komut:'',renk:i,kod:newCode('26110'+(i+1)),not:''}));
+function load(){try{const a=D?D.load():JSON.parse(localStorage.getItem(KEY));if(Array.isArray(a))return a.map(clean).filter(Boolean)}catch{}return seed()}
+function save(){try{D?D.save(P):localStorage.setItem(KEY,JSON.stringify(P))}catch{}}
+function safeUrl(a){try{const u=new URL(/^[a-z][a-z0-9+.-]*:\/\//i.test(a)?a:'https://'+a);return /^https?:$/.test(u.protocol)?u.href:null}catch{return null}}
+
+let P=load(),active=null,lifted=false,dragId=null,editId=null,R={},S={};
+const grid=$('#grid'),toastEl=$('#toast');let toastT;
+function toast(m){toastEl.textContent=m;toastEl.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>toastEl.hidden=true,4500)}
+function commit(){save();render();checkAll()}
+
+function setActive(a){if(active===a)return;if(active)active.box.classList.remove('on','lifted');active=a;lifted=false;if(a)a.box.classList.add('on')}
+
+function openProject(p){
+  if(D)return D.open(p).then(err=>{if(err)toast(err)});
+  if(p.tur==='web'){const u=safeUrl(p.adres);if(!u)return toast('Adres geçerli bir web adresi değil. Düzenle, http veya https ile yaz.');const go=$('#go');go.href=u;go.click();return}
+  toast(`${p.ad}: klasör ve local uygulamalar exe sürümünde açılır. Kayıtlı yol: ${p.adres}`)}
+
+function card(p){
+  const [bg,ink]=PAL[p.renk],slot=el('div','slot'),box=el('div','box'),rec={slot,box};
+  box.style.setProperty('--c',bg);box.style.setProperty('--ink',ink);
+  box.tabIndex=0;box.draggable=true;box.setAttribute('role','button');
+  box.setAttribute('aria-label',`${p.ad}, ${p.adres?TAG[p.tur]+', aç':'adres yok, ekle'}`);
+  const bay=el('div','bay'),ins=el('div','inside'),dl=el('div','door l'),dr=el('div','door r');
+  const st=el('span','dim',!p.adres?'Tıkla, adresi ekle':p.tur==='web'?'Tıkla, tarayıcıda aç':D?'Tıkla, aç':'Exe sürümünde açılır'),
+    lamp=el('span','lamp'+(p.adres?'':' warn'));
+  R[p.id]={lamp,st};
+  ins.append(el('b','',p.ad),el('span','',p.adres||'Adres girilmedi'),st);
+  if(p.not)ins.append(el('span','dim',p.not));
+  dl.append(el('span','name',p.ad.toLocaleUpperCase('tr')));
+  const [own,ser,chk]=p.kod.split(/[ -]/),code=el('span','code',own+' '+ser);
+  code.append(el('i','',chk),el('small','','REDMOND GLOBAL TRADE'));dr.append(code);
+  bay.append(ins,dl,dr);
+  const bot=el('div','rail bot'),ed=el('button','ed','✎');
+  ed.type='button';ed.setAttribute('aria-label',p.ad+' düzenle');
+  ed.addEventListener('click',e=>{e.stopPropagation();edit(p)});
+  bot.append(lamp,el('span','',p.adres?TAG[p.tur]:'ADRES YOK'),ed);
+  box.append(el('div','rail'),bay,bot);slot.append(box);
+
+  slot.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')setActive(rec)});
+  slot.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&active===rec)setActive(null)});
+  box.addEventListener('focus',()=>{if(box.matches(':focus-visible'))setActive(rec)});
+  box.addEventListener('keydown',e=>{if(e.target===box&&(e.key==='Enter'||e.key===' ')){e.preventDefault();box.click()}});
+  box.addEventListener('click',()=>{if(!p.adres)return edit(p);if(active!==rec)return setActive(rec);openProject(p)});
+  box.addEventListener('dragstart',e=>{dragId=p.id;e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',p.id)});
+  slot.addEventListener('dragover',e=>{if(dragId)e.preventDefault()});
+  slot.addEventListener('drop',e=>{e.preventDefault();const a=P.findIndex(q=>q.id===dragId),b=P.findIndex(q=>q.id===p.id);dragId=null;
+    if(a<0||a===b)return;P.splice(b,0,P.splice(a,1)[0]);commit()});
+  return slot}
+
+/* durum ışığı (yalnızca exe): web'e istek atılır, local yolun yerinde olup olmadığına bakılır */
+function paint(){let ok=0,down=0;
+  for(const p of P){const s=S[p.id],r=R[p.id];if(!s||!r||!p.adres)continue;s.ok?ok++:down++;
+    r.lamp.className='lamp '+(s.ok?'ok':'down');
+    r.st.textContent=(p.tur==='web'?(s.ok?'Çalışıyor':'Ulaşılamıyor'):(s.ok?'Yol yerinde':'Yol bulunamadı'))+' · son kontrol '+saat.format(s.t)}
+  $('#m-ok').textContent=ok;$('#m-down').textContent=down}
+function checkAll(){if(D)for(const p of P)if(p.adres)D.check(p).then(ok=>{S[p.id]={ok,t:new Date()};paint()})}
+
+function render(){
+  setActive(null);R={};grid.replaceChildren(...P.map(card));
+  if(!P.length)grid.append(el('p','empty','Saha boş. "+ Yeni Konteyner" ile ilk projeni ekle.'));
+  $('#m-toplam').textContent=P.length;
+  $('#m-sunucu').textContent=P.filter(p=>p.tur==='web').length;
+  $('#m-local').textContent=P.filter(p=>p.tur==='klasor'||p.tur==='local-app').length;
+  $('#m-eksik').textContent=P.filter(p=>!p.adres).length;paint()}
+
+/* düzenleme */
+const dlg=$('#dlg'),frm=$('#frm'),fTur=$('#f-tur'),fSil=$('#f-sil');
+PAL.forEach(([c],i)=>{const l=el('label'),r=el('input'),s=el('span');r.type='radio';r.name='renk';r.value=i;r.id='f-renk-'+i;
+  l.setAttribute('aria-label','Renk '+(i+1));s.style.setProperty('--c',c);l.append(r,s);$('#f-renk').append(l)});
+function turUI(){const [l,ph]=PH[fTur.value];$('#l-adres').textContent=l;$('#f-adres').placeholder=ph}
+fTur.addEventListener('change',turUI);
+function edit(p){
+  editId=p?p.id:null;$('#dlg-h').textContent=p?'Konteyneri düzenle':'Yeni konteyner';
+  $('#f-ad').value=p?p.ad:'';fTur.value=p&&p.tur?p.tur:'web';$('#f-adres').value=p?p.adres:'';$('#f-komut').value=p?p.komut:'';$('#f-not').value=p?p.not:'';
+  $('#f-renk-'+(p?p.renk:P.length%PAL.length)).checked=true;
+  $('#f-sira').hidden=fSil.hidden=!p;fSil.textContent='Sil';fSil.dataset.armed='';turUI();
+  if(!dlg.open)dlg.showModal()}
+frm.addEventListener('submit',e=>{e.preventDefault();
+  const d={ad:str($('#f-ad').value,60),tur:fTur.value,adres:str($('#f-adres').value,500),komut:str($('#f-komut').value,300),renk:+frm.elements.renk.value,not:str($('#f-not').value,200)};
+  if(!d.ad)return;const p=P.find(q=>q.id===editId);if(p)Object.assign(p,d);else P.push({id:uid(),kod:newCode(),...d});
+  commit();dlg.close()});
+function move(d){const i=P.findIndex(q=>q.id===editId),j=i+d;if(i<0||j<0||j>=P.length)return;[P[i],P[j]]=[P[j],P[i]];commit()}
+$('#f-one').addEventListener('click',()=>move(-1));$('#f-arka').addEventListener('click',()=>move(1));
+$('#f-vazgec').addEventListener('click',()=>dlg.close());
+fSil.addEventListener('click',()=>{if(!fSil.dataset.armed){fSil.dataset.armed='1';fSil.textContent='Emin misin? Evet, sil';return}
+  P=P.filter(q=>q.id!==editId);commit();dlg.close();toast('Konteyner silindi')});
+$('#add').addEventListener('click',()=>edit(null));
+
+/* projects.json */
+const jd=$('#jd'),ta=$('#json-ta'),jerr=$('#json-err');
+$('#json-btn').addEventListener('click',()=>{ta.value=JSON.stringify(P.map(p=>({...p,durum:'bilinmiyor'})),null,2);jerr.textContent='';jd.showModal()});
+$('#json-kapat').addEventListener('click',()=>jd.close());
+$('#json-kopya').addEventListener('click',()=>{(navigator.clipboard?navigator.clipboard.writeText(ta.value):Promise.reject())
+  .then(()=>toast('projects.json panoya kopyalandı'),()=>{ta.select();toast('Metin seçildi. Ctrl+C ile kopyala.')})});
+$('#json-ice').addEventListener('click',()=>{try{const a=JSON.parse(ta.value);if(!Array.isArray(a))throw 0;const c=a.map(clean).filter(Boolean);if(a.length&&!c.length)throw 0;
+  P=c;commit();jd.close();toast(c.length+' konteyner yüklendi')}catch{jerr.textContent='Geçerli bir projects.json değil. Köşeli parantezli bir liste olmalı ve her kayıtta "ad" bulunmalı.'}});
+
+document.addEventListener('click',e=>{if(!e.target.closest('.box'))setActive(null)});
+
+/* vinç: araba imleci yumuşak gecikmeyle izler, halat aktif konteynere iner ve kaldırır */
+const beam=$('#beam'),trol=$('#trolley'),rope=$('#rope'),spr=$('#spreader');
+const TROL=12,SPR=9,LIFT=14,IDLE=26,K=matchMedia('(prefers-reduced-motion:reduce)').matches?1:.13;
+let px=innerWidth/2,x=px,len=IDLE;
+const track=e=>{px=e.clientX};addEventListener('pointermove',track);addEventListener('pointerdown',track);
+function frame(){
+  const b=beam.getBoundingClientRect();let tx=px-b.left,tl=IDLE,w=96;
+  if(active){const s=active.slot.getBoundingClientRect(),reach=Math.max(6,s.top-b.bottom-TROL-SPR);
+    tx=s.left+s.width/2-b.left;w=s.width*.86;
+    if(!lifted&&Math.abs(x-tx)<3&&Math.abs(len-reach)<3){lifted=true;active.box.classList.add('lifted')}
+    tl=Math.max(6,reach-(lifted?LIFT:0))}
+  tx=Math.min(Math.max(tx,34),b.width-34);x+=(tx-x)*K;len+=(tl-len)*K;
+  trol.style.transform=`translateX(${x}px)`;rope.style.transform=`translateX(-50%) scaleY(${len})`;
+  spr.style.transform=`translate(-50%,${len}px)`;spr.style.width=w+'px';
+  requestAnimationFrame(frame)}
+
+const saat=new Intl.DateTimeFormat('tr-TR',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Istanbul'});
+const tick=()=>$('#m-saat').textContent=saat.format(new Date());tick();setInterval(tick,20000);
+if(D){document.querySelectorAll('.dsk').forEach(e=>e.hidden=false);$('#proto').hidden=true}
+render();checkAll();setInterval(checkAll,60000);requestAnimationFrame(frame);
+</script>
+
+</body>
+</html>

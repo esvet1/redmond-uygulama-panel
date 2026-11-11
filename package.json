@@ -1,0 +1,16 @@
+{
+  "name": "redmond-proje-limani",
+  "version": "1.0.0",
+  "description": "REDMOND Proje Limani",
+  "author": "REDMOND Global Trade",
+  "main": "main.js",
+  "scripts": { "start": "electron .", "dist": "electron-builder --win portable --x64" },
+  "devDependencies": { "electron": "33.2.1", "electron-builder": "25.1.8" },
+  "build": {
+    "appId": "com.redmond.projelimani",
+    "productName": "REDMOND Proje Limani",
+    "files": ["main.js", "preload.js", "index.html"],
+    "win": { "target": "portable", "signAndEditExecutable": false },
+    "portable": { "artifactName": "REDMOND-Proje-Limani.exe" }
+  }
+}
